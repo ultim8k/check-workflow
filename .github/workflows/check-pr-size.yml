@@ -48,6 +48,7 @@ jobs:
             echo "❗️ The pull request exceeds the allowed changes."
             echo "Files changed: $FILES_CHANGED (max allowed: $MAX_FILES_COUNT)"
             echo "Lines changed: $(($LINES_ADDED + $LINES_DELETED)) (max allowed: $MAX_LINES_COUNT)"
+            echo "Please split the pull request into smaller ones, to make the review process easier."
             exit 1
           else
             echo "✅ The pull request size is within allowed limits."
