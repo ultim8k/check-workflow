@@ -1,0 +1,33 @@
+name: Validate Branch name and PR title
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check branch name against regex pattern
+        run: |
+          BRANCH_NAME="${GITHUB_REF##*/}"
+          PATTERN="^(?:fix|feat|docs|style|refactor|perf|test|build|ci|chore|revert)/TICKET-\d{1,5}-.*"
+
+          if [[ ! $BRANCH_NAME =~ $PATTERN ]]; then
+            echo "Error: The branch name $BRANCH_NAME does not adhere to the required format."
+            exit 1
+          else
+            echo "Branch name $BRANCH_NAME is valid."
+          fi
+
+      - name: Check PR title against regex pattern
+        run: |
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          PATTERN="^(?:fix|feat|docs|style|refactor|perf|test|build|ci|chore|revert)\(TICKET-\d{1,5}\): .*"
+
+          if [[ ! $PR_TITLE =~ $PATTERN ]]; then
+            echo "Error: The PR title '$PR_TITLE' does not adhere to the required format."
+            exit 1
+          else
+            echo "PR title '$PR_TITLE' is valid."
+          fi
