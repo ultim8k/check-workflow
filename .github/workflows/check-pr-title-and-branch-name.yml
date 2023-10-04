@@ -11,12 +11,12 @@ jobs:
       - name: Debug
         run: |
           echo "DEBUG:"
-          echo "GITHUB_REF: ${GITHUB_REF##*/}"
+          echo "GITHUB_REF: $(git symbolic-ref --short HEAD)"
           echo "PR_TITLE: ${{ github.event.pull_request.title }}"
 
       - name: Check branch name against regex pattern
         run: |
-          BRANCH_NAME="${GITHUB_REF##*/}"
+          BRANCH_NAME="$(git symbolic-ref --short HEAD)"
           PATTERN="^(?:fix|feat|docs|style|refactor|perf|test|build|ci|chore|revert)/TICKET-\d{1,5}-.*"
 
           if [[ ! $BRANCH_NAME =~ $PATTERN ]]; then
